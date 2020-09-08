@@ -1,38 +1,36 @@
-import React, { useState, useRef } from "react"
-import { CSSTransition } from "react-transition-group"
+import React, { useState, useRef } from 'react';
+import { CSSTransition } from 'react-transition-group';
 
-import styles from "./Tooltip.module.scss"
+import styles from './Tooltip.module.scss';
 
 export interface TooltipProps {
-    title: string
-    className?: string
+    title: string;
+    className?: string;
 }
 
 export const Tooltip: React.FC<TooltipProps> = ({ title, className, children }) => {
-    const [open, setOpen] = useState(false)
-    const wrapperRef = useRef<HTMLDivElement>(null)
+    const [open, setOpen] = useState(false);
+    const wrapperRef = useRef<HTMLDivElement>(null);
     const onClick = (): void => {
-        setOpen(!open)
-    }
-    
+        setOpen(!open);
+    };
+
     return (
-        <div 
-            className={styles.wrapper}
-            ref={wrapperRef}
-            onClick={onClick}
-            >
+        <div className={styles.wrapper} ref={wrapperRef} onClick={onClick}>
+            {children}
             <CSSTransition
                 in={open}
-                timeout={100}
+                timeout={200}
                 classNames={{
-                    enter: styles["tooltip-enter"],
-                    enterActive: styles["tooltip-enter-active"]
+                    enter: styles['tooltip-enter'],
+                    enterActive: styles['tooltip-enter-active'],
+                    exit: styles['tooltip-exit'],
+                    exitActive: styles['tooltip-exit-active'],
                 }}
                 unmountOnExit
-                >
-                <span className={styles["tooltip-enter-active"]}>{title}</span>
+            >
+                <span>{title}</span>
             </CSSTransition>
-            {children}
         </div>
-    )
-}
+    );
+};
