@@ -1,8 +1,3 @@
-.tooltip-wrapper {
-    position: relative;
-    cursor: default;
-}
-
 .tooltip {
     position: absolute;
     color: white;
@@ -12,26 +7,22 @@
 }
 
 .tooltip-enter {
-    @extend .tooltip;
     opacity: 0;
     transform: translateY(10px);
 }
 
 .tooltip-enter-active {
-    @extend .tooltip;
     opacity: 1;
     transform: translateY(0px);
     transition: opacity 300ms, transform 300ms;
 }
 
 .tooltip-exit {
-    @extend .tooltip;
     opacity: 1;
     transform: translateY(0px);
 }
 
 .tooltip-exit-active {
-    @extend .tooltip;
     opacity: 0;
     transform: translateY(10px);
     transition: opacity 300ms, transform 300ms;

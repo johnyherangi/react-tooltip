@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import styles from './Tooltip.module.scss';
@@ -10,13 +10,29 @@ export interface TooltipProps {
 
 export const Tooltip: React.FC<TooltipProps> = ({ title, className, children }) => {
     const [open, setOpen] = useState(false);
-    const wrapperRef = useRef<HTMLDivElement>(null);
+    const tooltipRef = useRef<HTMLDivElement>(null);
+    const childrenRef = useRef<HTMLDivElement>(null);
     const onClick = (): void => {
         setOpen(!open);
     };
+    useEffect(() => {
+        const onOutsideClick = (event: MouseEvent): void => {
+            const isTargetRef = (ref: React.RefObject<HTMLElement>) => {
+                return ref.current && ref.current.contains(event.target as Node);
+            };
+            if (!isTargetRef(childrenRef) && !isTargetRef(tooltipRef)) {
+                setOpen(false);
+            }
+        };
+
+        window.addEventListener('mousedown', onOutsideClick);
+        return () => {
+            window.removeEventListener('mousedown', onOutsideClick);
+        };
+    }, []);
 
     return (
-        <div className={styles.wrapper} ref={wrapperRef} onClick={onClick}>
+        <div>
             <CSSTransition
                 in={open}
                 timeout={300}
@@ -29,9 +45,13 @@ export const Tooltip: React.FC<TooltipProps> = ({ title, className, children }) 
                 }}
                 unmountOnExit
             >
-                <span>{title}</span>
+                <span ref={tooltipRef} className={className ?? styles.tooltip}>
+                    {title}
+                </span>
             </CSSTransition>
-            {children}
+            <div ref={childrenRef} onClick={onClick}>
+                {children}
+            </div>
         </div>
     );
 };
