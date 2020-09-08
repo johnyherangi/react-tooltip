@@ -17,13 +17,13 @@ export const Tooltip: React.FC<TooltipProps> = ({ title, className, children }) 
 
     return (
         <div className={styles.wrapper} ref={wrapperRef} onClick={onClick}>
-            {children}
             <CSSTransition
                 in={open}
-                timeout={200}
+                timeout={300}
                 classNames={{
                     enter: styles['tooltip-enter'],
                     enterActive: styles['tooltip-enter-active'],
+                    enterDone: styles['tooltip-enter-active'],
                     exit: styles['tooltip-exit'],
                     exitActive: styles['tooltip-exit-active'],
                 }}
@@ -31,6 +31,7 @@ export const Tooltip: React.FC<TooltipProps> = ({ title, className, children }) 
             >
                 <span>{title}</span>
             </CSSTransition>
+            {children}
         </div>
     );
 };
